@@ -1,0 +1,13 @@
+int **criarMatriz(int linhas, int colunas);
+int **adicionaAresta(int linha, int coluna, int **matriz);
+void imprimeMatriz(int **matriz, int tamanho);
+int numeroArestas(int **matriz, int tamanho);
+void **lacos(int **matriz, int tamanho);
+void **arestasDuplas(int **matriz, int tamanho);
+int grauV(int **matriz, int vertice, int tamanho);
+void **somagrau(int **matriz, int tamanho);
+void **isolados(int **matriz, int tamanho);
+void verticesImpar(int **matriz, int tamanho);
+void teoremaArestas(int **matriz, int tamanho);
+void grafoSimples(int **matriz, int tamanho);
+void grafoCompleto(int **matriz, int tamanho);
