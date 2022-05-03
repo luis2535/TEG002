@@ -51,7 +51,7 @@ int numeroArestas(int **matriz, int tamanho)
     }
     return soma;
 }
-void **lacos(int **matriz, int tamanho)
+void lacos(int **matriz, int tamanho)
 {
     for (int i = 0; i < tamanho; i++)
     {
@@ -61,7 +61,7 @@ void **lacos(int **matriz, int tamanho)
         }
     }
 }
-void **arestasDuplas(int **matriz, int tamanho)
+void arestasDuplas(int **matriz, int tamanho)
 {
     for (int i = 0; i < tamanho; i++)
     {
@@ -92,7 +92,7 @@ int grauV(int **matriz, int vertice, int tamanho)
     soma = -1;
     return soma;
 }
-void **somagrau(int **matriz, int tamanho)
+void somagrau(int **matriz, int tamanho)
 {
     int soma = 0;
     for (int i = 1; i < tamanho + 1; i++)
@@ -101,7 +101,7 @@ void **somagrau(int **matriz, int tamanho)
     }
     printf("\nO somatório dos graus é: %d\n", soma);
 }
-void **isolados(int **matriz, int tamanho)
+void isolados(int **matriz, int tamanho)
 {
     int soma;
     int cont = 0;
@@ -217,4 +217,152 @@ void grafoCompleto(int **matriz, int tamanho)
     {
         printf("\nO grafo é completo.\n");
     }
+}
+void grafoRegular(int **matriz, int tamanho)
+{
+    int grau = grauV(matriz, 1, tamanho);
+    int comparar;
+    int cont = 0;
+    if (tamanho != 1)
+    {
+        for (int i = 1; i < tamanho; i++)
+        {
+            comparar = grauV(matriz, i + 1, tamanho);
+            if (grau != comparar)
+            {
+                cont++;
+            }
+        }
+    }
+    if (cont == 0)
+    {
+        printf("\nO grafo é regular.\n");
+    }
+    else
+    {
+        printf("\nO grafo não é regular.\n");
+    }
+}
+void passeio(int **matriz, int tamanho)
+{
+    printf("\nDigite o comprimento do passeio.\n");
+    int c;
+    scanf("%d", &c);
+    int grauTotal = 0;
+    for (int i = 1; i < tamanho + 1; i++)
+    {
+        grauTotal += grauV(matriz, i, tamanho);
+    }
+    if (grauTotal == 0)
+    {
+        printf("O passeio não pode ser realizado pois a matriz é nula.\n");
+    }
+    else if (c == grauTotal)
+    {
+        printf("O passeio pode ser realizado passando por todas as arestas do grafo.\n");
+    }
+    else if (c < grauTotal)
+    {
+        printf("O passeio pode ser realizado, porém não será passado por todas as arestas do grafo.\n");
+    }
+    else
+    {
+        printf("O passeio pode ser realizado passando mais de uma vez por algumas arestas.\n");
+    }
+}
+int **removerAresta(int **matriz, int tamanho)
+{
+    int x, y;
+    printf("\nDigite a aresta que deseja remover.\n");
+    scanf("%d %d", &x, &y);
+    if (x > tamanho || y > tamanho || x < 0 || y < 0)
+    {
+        printf("Esses vertices não existem.\n");
+    }
+    else
+    {
+        if (matriz[x - 1][y - 1] == 0)
+        {
+            printf("Não existe uma aresta entre esses 2 vertices.\n");
+        }
+        else
+        {
+            matriz[x - 1][y - 1]--;
+            matriz[y - 1][x - 1]--;
+            printf("Aresta removida com sucesso.\n");
+        }
+    }
+    return matriz;
+}
+int **removerVertice(int **matriz, int tamanho)
+{
+    int vertice;
+    printf("\nDigite o vertice que deseja remover.\n");
+    scanf("%d", &vertice);
+    int **matrizNova = criarMatriz(tamanho - 1, tamanho - 1);
+    if (vertice > tamanho || vertice <= 0)
+    {
+        printf("Esse vertice não existe.\n");
+        return matriz;
+    }
+    else
+    {
+        for (int i = 0; i < tamanho - 1; i++)
+        {
+            for (int j = 0; j < tamanho - 1; j++)
+            {
+                if (i < vertice - 1)
+                {
+                    if (j < vertice - 1)
+                    {
+                        matrizNova[i][j] = matriz[i][j];
+                    }
+                    if (j >= vertice - 1)
+                    {
+                        matrizNova[i][j] = matriz[i][j + 1];
+                    }
+                }
+                else
+                {
+                    if (i >= vertice - 1)
+                    {
+                        if (j < vertice - 1)
+                        {
+                            matrizNova[i][j] = matriz[i + 1][j];
+                        }
+                        else
+                        {
+                            matrizNova[i][j] = matriz[i + 1][j + 1];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return matrizNova;
+}
+void salvarGrafo(int **matriz, int tamanho)
+{
+    FILE *arq;
+    arq = fopen("grafo.txt", "w");
+    fprintf(arq, "%i", tamanho);
+    for (int i = 0; i < tamanho; i++)
+    {
+        for (int j = i; j < tamanho; j++)
+        {
+            if (matriz[i][j] != 0)
+            {
+                int arestas = matriz[i][j];
+                if (i == j)
+                {
+                    arestas = arestas / 2;
+                }
+                for (int k = 0; k < arestas; k++)
+                {
+                    fprintf(arq, "\n%i %i", i + 1, j + 1);
+                }
+            }
+        }
+    }
+    fclose(arq);
 }

@@ -21,6 +21,7 @@ int main()
     {
         adicionaAresta(x - 1, y - 1, matriz);
     }
+    fclose(arq);
     int k = -1;
     while (k != 0)
     {
@@ -36,6 +37,11 @@ int main()
         printf("8 - Vertices com grau impar é par?\n");
         printf("9 - Grafo é simples?\n");
         printf("10 - Grafo é completo?\n");
+        printf("11 - Grafo é regular?\n");
+        printf("12 - Passeio\n");
+        printf("13 - Remoção aresta.\n");
+        printf("14 - Remoção vertice.\n");
+        printf("15 - Salvar grafo.\n");
         printf("0 - Sair\n");
         scanf("%d", &k);
         switch (k)
@@ -92,6 +98,27 @@ int main()
             grafoCompleto(matriz, a);
             system("pause");
             break;
+        case 11:
+            grafoRegular(matriz, a);
+            system("pause");
+            break;
+        case 12:
+            passeio(matriz, a);
+            system("pause");
+            break;
+        case 13:
+            matriz = removerAresta(matriz, a);
+            system("pause");
+            break;
+        case 14:
+            matriz = removerVertice(matriz, a);
+            a--;
+            system("pause");
+            break;
+        case 15:
+            salvarGrafo(matriz, a);
+            system("pause");
+            break;
         case 0:
             printf("Finalizando\n");
             break;
@@ -100,6 +127,6 @@ int main()
             break;
         }
     }
-    fclose(arq);
+
     return 0;
 }
